@@ -18,6 +18,7 @@ FirstStatemachine::FirstStatemachine(/* args */)
     timeTravelRight = 0;
     stepCount = 0;
     theState = NONE;
+    CurrentState = 'A';
     isStop = false;
     cleaningunit_speed = 0;
     blinking = 0;
@@ -200,7 +201,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 1;
-            CurrentState = theState;
+            CurrentState = 'B';
         break;
         case INIT_DRIVE_UP:
             output[0] = 0;//EMERGENCY
@@ -212,7 +213,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 1;
-            CurrentState = theState;
+            CurrentState = 'C';
         break;   
         case IDLE:
             output[0] = 0;//EMERGENCY
@@ -224,7 +225,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;
+            CurrentState = 'D';
         break;
             case START_CLEANINGUNIT:
             output[0] = 0;//EMERGENCY
@@ -236,7 +237,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 1;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState; 
+            CurrentState = 'E'; 
         break;
         case DRIVE_TO_LOWER_ENDPOSITION:
             output[0] = 0;//EMERGENCY
@@ -248,7 +249,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 1;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;  
+            CurrentState = 'H';  
         break;
         case MOTOR_BREAK:
             output[0] = 0;//EMERGENCY
@@ -260,7 +261,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 1;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;
+            CurrentState = 'G';
         break;
         case DRIVE_TO_UPPER_ENDPOSITION:
             output[0] = 0;//EMERGENCY
@@ -272,7 +273,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;   
+            CurrentState = 'F';   
         break;
         case DRIVE_TO_THE_RIGHT:
             output[0] = 0;//EMERGENCY
@@ -284,7 +285,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 1;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState; 
+            CurrentState = 'J'; 
         break;
         case DRIVE_TO_THE_LEFT:
             output[0] = 0;//EMERGENCY
@@ -296,7 +297,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;  
+            CurrentState = 'I';  
         break;
         case STOP_EVERYTHING:
             output[0] = 1;//EMERGENCY
@@ -308,7 +309,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;  
+            CurrentState = 'K';  
         break;
         case EMERGENCY_HOLD:
             output[0] = 1;//EMERGENCY
@@ -320,7 +321,7 @@ void FirstStatemachine::evaluationOutput()
             output[6] = 0;//MOTOR_RIGHT
             output[7] = 0;//CLEANINGUNIT
             blinking = 0;
-            CurrentState = theState;
+            CurrentState = 'L';
         break;
     }
 }
