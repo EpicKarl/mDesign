@@ -10,38 +10,45 @@ void setup() {
 void recieveData(){
   Serial.setTimeout(100);
   if(Serial.available()){
+    Serial.flush();
+    incomingData[11] = {'0'};
     incomingSignal = Serial.readBytes(incomingData, 11);
-    if(incomingData[5]-'0' == 0){
-      incomingData[5] = '0';
-      incomingData[6] = '0';
-    }
-     for (auto &current : incomingData) {
+    /*for (auto &current : incomingData) {
       Serial.print(current-'0');
-     }
-     Serial.print("\n");
-    /*Serial.print(incomingData[0]-'0');
-    Serial.print(" ");
+     }*/
+    Serial.print("\n");
+    //Serial.print("p0=");
+    Serial.print(incomingData[0]-'0');
+//    Serial.print(" ");
+//    Serial.print("p1=");
     Serial.print(incomingData[1]-'0');
-    Serial.print(" ");
+//    Serial.print(" ");
+//    Serial.print("p2=");
     Serial.print(incomingData[2]-'0');
-    Serial.print(" ");
+//    Serial.print(" ");
+//    Serial.print("p3=");
     Serial.print(incomingData[3]-'0');
-    Serial.print(" ");
+//    Serial.print(" ");
+//    Serial.print("p4=");
     Serial.print(incomingData[4]-'0');
-    Serial.print(" ");
+//    Serial.print(" ");
+//    Serial.print("p5=");
     Serial.print(incomingData[5]-'0');
+//    Serial.print(" ");
+//    Serial.print("p6=");
     Serial.print(incomingData[6]-'0');
-    Serial.print(" ");
+//    Serial.print(" ");
+//    Serial.print("p7=");
     Serial.print(incomingData[7]-'0');
-    Serial.print(" ");
-    Serial.print(incomingData[8]);
-    Serial.print(" ");
-    Serial.print(incomingData[9]);
-    Serial.print(" ");
-    Serial.print(incomingData[10]);
-    Serial.print(" ");       
-    //Serial.print(incomingSignal);
-    Serial.print("\n");*/
+//    Serial.print(" ");
+//    Serial.print("p8=");
+    Serial.print(incomingData[8]-'0');
+//    Serial.print(" ");
+//    Serial.print("p9=");
+    Serial.print(incomingData[9]-'0');
+//    Serial.print(" ");
+//    Serial.print("p10=");
+    Serial.print(incomingData[10]-'0');
   }
 }
 

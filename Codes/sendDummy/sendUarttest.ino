@@ -7,7 +7,7 @@ void sendDataToSerial(){		//Dummy, der alle 2 Sekunden das Sensorabbild wechsel
       switch(count){			//0000000000
         case 1:					//11000901100
           dataToSend[0]= 0;		//20100451010
-          dataToSend[1]= 0;		//30010791001
+          dataToSend[1]= 0;		//30010701001
           dataToSend[2]= 0;		//Nachrichtlänge variiert also, muss bei empfang angepasst werden
           dataToSend[3]= 0;
           dataToSend[4]= 0;
@@ -58,7 +58,7 @@ void sendDataToSerial(){		//Dummy, der alle 2 Sekunden das Sensorabbild wechsel
           break;
       }
       if(dataToSend[0] != OldState){ //array wird nur gesendet, wenn sich dataToSend[0] --der state-- verändert
-      for (int x = 0; x<7; x++){	 //verwendet Arduinogruppe so beinhaltet aber, dass FSM korrekt funktioniert
+      for (int x = 0; x<10; x++){	 //verwendet Arduinogruppe so beinhaltet aber, dass FSM korrekt funktioniert
         Serial.print(dataToSend[x]); 
       }
       OldState = dataToSend[0];
