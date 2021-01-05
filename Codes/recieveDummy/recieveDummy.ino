@@ -1,7 +1,14 @@
-byte incomingData[11] = {'0'};
+#include <stdlib.h>                   //für atoi() notwendig
+
+byte bufferData[10] = {'0'};
+char incomingData[10] = {'0'};
+byte dataToSend[6] = {'0'};
+byte old_dataToSend[6] = {'0'};
+char tmp_state[2] = {'0'};
+
 byte incomingSignal;
-byte dataToSend[6] = {0};
-byte old_dataToSend[6] = {0};
+char state;
+
 
 void setup() {
   Serial.begin(9600);
@@ -10,50 +17,28 @@ void setup() {
 void recieveData(){
   Serial.setTimeout(100);
   if(Serial.available()){
-    Serial.flush();
-    incomingData[11] = {'0'};
-    incomingSignal = Serial.readBytes(incomingData, 11);
-    /*for (auto &current : incomingData) {
-      Serial.print(current-'0');
-     }*/
-    Serial.print("\n");
-    //Serial.print("p0=");
-    Serial.print(incomingData[0]-'0');
-//    Serial.print(" ");
-//    Serial.print("p1=");
-    Serial.print(incomingData[1]-'0');
-//    Serial.print(" ");
-//    Serial.print("p2=");
-    Serial.print(incomingData[2]-'0');
-//    Serial.print(" ");
-//    Serial.print("p3=");
-    Serial.print(incomingData[3]-'0');
-//    Serial.print(" ");
-//    Serial.print("p4=");
-    Serial.print(incomingData[4]-'0');
-//    Serial.print(" ");
-//    Serial.print("p5=");
-    Serial.print(incomingData[5]-'0');
-//    Serial.print(" ");
-//    Serial.print("p6=");
-    Serial.print(incomingData[6]-'0');
-//    Serial.print(" ");
-//    Serial.print("p7=");
-    Serial.print(incomingData[7]-'0');
-//    Serial.print(" ");
-//    Serial.print("p8=");
-    Serial.print(incomingData[8]-'0');
-//    Serial.print(" ");
-//    Serial.print("p9=");
-    Serial.print(incomingData[9]-'0');
-//    Serial.print(" ");
-//    Serial.print("p10=");
-    Serial.print(incomingData[10]-'0');
+    incomingSignal = Serial.readBytes(bufferData, 11);
+    tmp_state[0] = bufferData[0];
+    tmp_state[1] = bufferData[1];
+    state = atoi(tmp_state);            //verwendet bufferData[0],[1] um aus 6 & 5 -> 0x65 -> 'A' zu machen
+    incomingData[0] = state;            //Zuweisungen in char Array für Server
+    incomingData[1] = bufferData[2];
+    incomingData[2] = bufferData[3];
+    incomingData[3] = bufferData[4];
+    incomingData[4] = bufferData[5];
+    incomingData[5] = bufferData[6];
+    incomingData[6] = bufferData[7];
+    incomingData[7] = bufferData[8];
+    incomingData[8] = bufferData[9];
+    incomingData[9] = bufferData[10];
+    for (auto &current : incomingData) {  //Lediglich Konsolenausgabe, ob Übertragung geklappt hat
+      Serial.print(current);              //Funktioniert nicht wenn sendDataToSerial() verwendet wird
+    }Serial.print("\n");
   }
 }
 
 void sendDataToSerial(){
-  if(dataToSend[0] != old_dataToSend[0] || 
+  if(dataToSend[0] != old_dataToSend[0] || //sendet nur wenn sich irgendwas ändert
      dataToSend[1] != old_dataToSend[1] || 
      dataToSend[2] != old_dataToSend[2] ||
      dataToSend[3] != old_dataToSend[3] ||
