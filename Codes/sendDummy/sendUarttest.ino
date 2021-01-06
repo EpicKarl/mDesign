@@ -4,10 +4,10 @@ int OldState;
 int count;
 
 void sendDataToSerial(){		//Dummy, der alle 2 Sekunden das Sensorabbild wechsel
-      switch(count){			//0000000000
-        case 1:					//11000901100
-          dataToSend[0]= 0;		//20100451010
-          dataToSend[1]= 0;		//30010701001
+      switch(count){			//A000000000
+        case 1:					//B100001100
+          dataToSend[0]= 'A';	//C010011010
+          dataToSend[1]= 0;		//D001001001
           dataToSend[2]= 0;		//Nachrichtlänge variiert also, muss bei empfang angepasst werden
           dataToSend[3]= 0;
           dataToSend[4]= 0;
@@ -18,36 +18,36 @@ void sendDataToSerial(){		//Dummy, der alle 2 Sekunden das Sensorabbild wechsel
 		  dataToSend[9]= 0;
           break;
         case 2:
-          dataToSend[0]= 1;
+          dataToSend[0]= 'B';
           dataToSend[1]= 1;
           dataToSend[2]= 0;
           dataToSend[3]= 0;
           dataToSend[4]= 0;
-          dataToSend[5]= 90;
+          dataToSend[5]= 0;
           dataToSend[6]= 1;
 		  dataToSend[7]= 1;
 		  dataToSend[8]= 0;
 		  dataToSend[9]= 0;
           break;
         case 3:
-          dataToSend[0]= 2;
+          dataToSend[0]= 'C';
           dataToSend[1]= 0;
           dataToSend[2]= 1;
           dataToSend[3]= 0;
           dataToSend[4]= 0;
-          dataToSend[5]= 45;
+          dataToSend[5]= 1;
           dataToSend[6]= 1;		  
 		  dataToSend[7]= 0;
 		  dataToSend[8]= 1;
 		  dataToSend[9]= 0;
           break;
         case 4:
-          dataToSend[0]= 3;
+          dataToSend[0]= 'D';
           dataToSend[1]= 0;
           dataToSend[2]= 0;
           dataToSend[3]= 1;
           dataToSend[4]= 0;
-          dataToSend[5]= 70;
+          dataToSend[5]= 0;
           dataToSend[6]= 1;		  
 		  dataToSend[7]= 0;
 		  dataToSend[8]= 0;
