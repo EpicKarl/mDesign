@@ -1,0 +1,400 @@
+// Version 1.1
+
+
+#include <Arduino.h>
+#include <ESP8266WebServer.h> 
+#include <ESP8266WiFi.h> 
+#include <WiFiClient.h>
+
+ESP8266WebServer server(80); 
+
+// ------------------------Receiving Data by P.O.------
+byte incomingData[11] = {'0'};
+byte incomingSignal;
+byte dataToSend[6] = {0};
+byte old_dataToSend[6] = {0};
+
+void recieveData(){
+  Serial.setTimeout(100);
+  if(Serial.available()){
+    incomingSignal = Serial.readBytes(incomingData, 11);
+    if(incomingData[5]-'0' == 0){
+      incomingData[5] = '0';
+      incomingData[6] = '0';
+    }
+     for (auto &current : incomingData) {
+      Serial.print(current-'0');
+     }
+     Serial.print("\n");
+  }
+}
+
+void sendDataToSerial(){
+  if(dataToSend[0] != old_dataToSend[0] || 
+     dataToSend[1] != old_dataToSend[1] || 
+     dataToSend[2] != old_dataToSend[2] ||
+     dataToSend[3] != old_dataToSend[3] ||
+     dataToSend[4] != old_dataToSend[4] ||
+     dataToSend[5] != old_dataToSend[5]){
+    for (auto &current : dataToSend) {
+      Serial.print(current);
+    }for (auto &current : dataToSend) {
+      old_dataToSend[current] = dataToSend[current];
+     }
+  }
+}
+// ----------------------------------------------------
+ 
+// Make a wifi name and password as access points
+const char *ssid = "AntidustA_Control";
+const char *password = "AntidustA";
+
+#define OFF 3
+#define arraySizeSend 6
+#define arraySizeReceive 10
+#define motorCleaningUnit 5
+// Y Drive
+#define Pos_Y 13 //D7
+#define Neg_Y 12 //D6
+int statusYDrive = OFF; //HIGH == Pos_Y; LOW == Neg_Y;
+
+// X Drive
+#define Pos_X 5 //D2
+#define Neg_X 4 //D1
+int statusXDrive = OFF; //HIGH == Pos_X; LOW == Neg_X;
+
+char dataSend[arraySizeSend] = {'1', '0', '0', '0', '0', '7'};
+char dataReceive[arraySizeReceive] = {'c', '1', '0', '0', '0', '7', '0', '0', '0', '0'}; // (char) 90
+char cleaning = dataReceive[motorCleaningUnit];
+char Min_Cleaning = '0';
+char Max_Cleaning = '9';
+// ------------------------------------Declare constants to make the page to be visited.----------------------------
+const String HtmlHtml = "<html><head>"
+"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /></head>";
+const String HtmlTitle = "<h1>Control AntidustA 2.0 Using NodeMCU WiFi Access Point</h1><br/>";
+// Y Drive
+const String HtmlPos_Y = "AntidusA is driving to <b>Pos_Y</b><br/>";
+const String HtmlNeg_Y = "AntidusA is driving to <b>Neg_Y</b><br/>";
+const String HtmlStop_Y = "AntidusA <b>Stopped_Y</b> driving<br/>";
+const String HtmlYDrive = 
+  "<a href=\"Pos_Y\"><button style=\"background-color:green;color:white;width:20%;height:5%;\">Pos_Y </button></a>"
+  "<a href=\"Neg_Y\"><button style=\"background-color:green;color:white;width:20%;height:5%;\">Neg_Y </button></a>"
+  "<a href=\"SY\"><button style=\"background-color:red;color:white;width:20%;height:5%;\">Stopp_Y </button></a><br/><br/><br/>";
+
+// X Drive
+const String HtmlPos_X = "AntidusA is driving to <b>Pos_X</b><br/>";
+const String HtmlNeg_X = "AntidusA is driving to <b>Neg_X</b><br/>";
+const String HtmlStop_X = "AntidusA <b>Stopped_X</b> driving<br/>";
+const String HtmlXDrive = 
+  "<a href=\"Pos_X\"><button style=\"background-color:green;color:white;width:20%;height:5%;\">Pos_X </button></a>"
+  "<a href=\"Neg_X\"><button style=\"background-color:green;color:white;width:20%;height:5%;\">Neg_X </button></a>"
+  "<a href=\"SX\"><button style=\"background-color:red;color:white;width:20%;height:5%;\">Stopp_X </button></a><br/><br/><br/>";
+
+//Cleaning
+const String HtmlCleaning = "AntidustA is cleaning (0: no cleaning, 9: max cleaning)<br/>";
+const String HtmlDecreaseCLeaning = "<a href=\"-\"><button style=\"background-color:green;color:white;width:20%;height:5%;\">Cleaning_Decrease </button></a>";
+const String HtmlIncreaseCLeaning = "<a href=\"+\"><button style=\"background-color:green;color:white;width:20%;height:5%;\">Cleaning_Increase </button></a><br/><br/><br/>";
+
+const String HtmlHtmlClose = "</html>";
+// -----------------------------------------------------------------------------------------------------------------
+
+
+//Sending to Controller
+
+void response(){
+  String htmlRes = HtmlHtml + HtmlTitle;
+  //Y Drive
+  if(statusYDrive == HIGH){
+    htmlRes += HtmlPos_Y;
+  }
+  else if(statusYDrive == OFF){
+    htmlRes += HtmlStop_Y;
+  }else{
+    htmlRes += HtmlNeg_Y;
+  }
+  
+  // Y Drive
+  htmlRes += HtmlYDrive;
+
+  // X Drive
+  if(statusXDrive == HIGH){
+    htmlRes += HtmlPos_X;
+  }
+  else if(statusXDrive == OFF){
+    htmlRes += HtmlStop_X;
+  }else{
+    htmlRes += HtmlNeg_X;
+  }
+
+  // X Drive
+  htmlRes += HtmlXDrive;
+
+  // Cleaning
+  htmlRes += HtmlCleaning + HtmlDecreaseCLeaning + (String)dataReceive[motorCleaningUnit] + HtmlIncreaseCLeaning; // (String)((int)dataSend[motorCleaningUnit])
+
+  // FSM State
+  switch (dataReceive[0]) {
+  case 'a':
+    htmlRes += "FSM is in INIT_DRIVE_LEFT State<br/>";
+    break;
+  case 'b':
+    htmlRes += "FSM is in INIT_DRIVE_UP State<br/>";
+    break;
+  case 'c':
+    htmlRes += "FSM is in IDLE State<br/>";
+    break;
+  case 'd':
+    htmlRes += "FSM is in START_CLEANING State<br/>";
+    break;
+  case 'e':
+    htmlRes += "FSM is in DRIVE_TO_LOWER_ENDPOSIZION State<br/>";
+    break;
+  case 'f':
+    htmlRes += "FSM is in MOTOR_BREAK State<br/>";
+    break;
+  case 'g':
+    htmlRes += "FSM is in DRIVE_TO_UPPER_ENDPOSITION State<br/>";
+    break;
+  case 'h':
+    htmlRes += "FSM is in DRIVE_TO_THE_LEFT State<br/>";
+    break;
+  case 'i':
+    htmlRes += "FSM is in DRIVE_TO_THE_RIGHT State<br/>";
+    break;
+  case 'j':
+    htmlRes += "FSM is in STOP_EVERYTHING State<br/>";
+    break;
+  case 'k':
+    htmlRes += "FSM is in EMERGENCY_HOLD State<br/>";
+    break;
+  }
+
+  htmlRes += "<br/>";
+  
+  // Ausgabe AntidustA fahrt
+  htmlRes += "Driving AntidustA:<br/>";
+ 
+  // hoch
+  if(dataReceive[1] == '1'){
+    htmlRes += "AntidustA is driving up<br/>";
+  }else{}
+
+  // runter
+  if (dataReceive[2] == '1'){
+    htmlRes += "AntidustA is driving down<br/>";
+  }else{}
+  
+  //links
+  if(dataReceive[3] == '1'){
+    htmlRes += "AntidustA is driving left<br/>";
+  }else{}
+  
+  // rechts
+  if(dataReceive[4] == '1'){
+    htmlRes += "AntidustA is driving right<br/>";
+  }else{}
+
+  htmlRes += "<br/>";
+
+  // Position auf Paneele
+  htmlRes += "Position des AntidustA auf der Paneele:<br/>";
+  
+  // rechts
+  if(dataReceive[6] == '1'){
+    htmlRes += "AntidustA is right ";
+  }else{}
+
+  // links
+  if(dataReceive[7] == '1'){
+    htmlRes += "AntidustA is left ";
+  }else{}
+
+  // oben
+  if(dataReceive[8] == '1'){
+    htmlRes += "up<br/>";
+  }else{}
+
+  // unten
+  if(dataReceive[9] == '1'){
+    htmlRes += "down<br/>";
+  }else{}
+
+  htmlRes += HtmlHtmlClose;
+ 
+  server.send(200, "text/html", htmlRes);
+}
+
+//Max Celaning Warning
+void warningMaxCleaningReached(){
+  digitalWrite(D4, HIGH);
+}
+
+//Max Celaning Warning
+void warningMinCleaningReached(){
+  digitalWrite(D5, HIGH);
+}
+
+// Decrese Cleaning
+void decreaseCleaning(){
+  if((dataReceive[motorCleaningUnit] != '0' || dataReceive[motorCleaningUnit] != '1' || dataReceive[motorCleaningUnit] != '2' || dataReceive[motorCleaningUnit] != '3' || dataReceive[motorCleaningUnit] != '4' || dataReceive[motorCleaningUnit] != '5' || dataReceive[motorCleaningUnit] != '6'  || dataReceive[motorCleaningUnit] != '7'  || dataReceive[5] != '8'  || dataReceive[5] != '9') && dataSend[motorCleaningUnit] < '1'){
+    Serial.println("No more decreasing possible");
+    warningMinCleaningReached();
+  }
+  else
+  {
+    digitalWrite(D4,LOW);
+    Serial.println("Decrease");
+    dataSend[motorCleaningUnit] = dataSend[motorCleaningUnit] - 1;
+    dataReceive[motorCleaningUnit] = dataReceive[motorCleaningUnit] - 1;
+    Serial.println(dataSend[motorCleaningUnit]); // Serial.println((int)dataSend[motorCleaningUnit]);
+  }
+  response();
+}
+
+// Increse Cleaning
+void increaseCleaning(){
+  if((dataReceive[motorCleaningUnit] != '0' || dataReceive[motorCleaningUnit] != '1' || dataReceive[motorCleaningUnit] != '2' || dataReceive[motorCleaningUnit] != '3' || dataReceive[motorCleaningUnit] != '4' || dataReceive[motorCleaningUnit] != '5' || dataReceive[motorCleaningUnit] != '6'  || dataReceive[motorCleaningUnit] != '7'  || dataReceive[motorCleaningUnit] != '8'  || dataReceive[motorCleaningUnit] != '9') && dataSend[motorCleaningUnit] > '8'){
+    Serial.println("No more increasing possible");
+    warningMaxCleaningReached();
+  }
+  else
+  {
+    digitalWrite(D5,LOW);
+    Serial.println("Increase");
+    dataSend[motorCleaningUnit] = dataSend[motorCleaningUnit] + 1;
+    dataReceive[motorCleaningUnit] = dataReceive[motorCleaningUnit] + 1;
+    Serial.println(dataSend[motorCleaningUnit]);
+  }
+  response();
+}
+
+// Positive Y Drive
+void positiveYDrive() {
+  statusYDrive = HIGH;
+  digitalWrite(Neg_Y, !statusYDrive);
+  delay(50);
+  digitalWrite(Pos_Y, statusYDrive);
+  response();
+  dataSend[1] = '1';
+  dataSend[2] = '0';
+}
+
+// Negative Y Drive
+void negativeYDrive() {
+  statusYDrive = LOW;
+  digitalWrite(Pos_Y, statusYDrive);
+  delay(50);
+  digitalWrite(Neg_Y, !statusYDrive);
+  response();
+  dataSend[1] = '0';
+  dataSend[2] = '1';
+}
+
+// Stop Y Drive
+void stopYDrive() {
+  statusYDrive = 3;
+  digitalWrite(Pos_Y, LOW);
+  digitalWrite(Neg_Y, LOW);
+  response();
+  dataSend[1] = '0';
+  dataSend[2] = '0';
+}
+
+// Positive X Drive
+void positiveXDrive() {
+  statusXDrive = HIGH;
+  digitalWrite(Neg_X, !statusXDrive);
+  delay(50);
+  digitalWrite(Pos_X, statusXDrive);
+  response();
+  dataSend[3] = '1';
+  dataSend[4] = '0';
+}
+
+// Negative X Drive
+void negativeXDrive() {
+  statusXDrive = LOW;
+  digitalWrite(Pos_X, statusXDrive);
+  delay(50);
+  digitalWrite(Neg_X, !statusXDrive);
+  response();
+  dataSend[3] = '0';
+  dataSend[4] = '1';
+}
+  
+// Stop X Drive
+void stopXDrive() {
+  statusXDrive = 3;
+  digitalWrite(Pos_X, LOW);
+  digitalWrite(Neg_X, LOW);
+  response();
+  dataSend[3] = '0';
+  dataSend[4] = '0';
+}
+ 
+void setup() {
+Serial.begin(9600);
+
+  // Status LED
+  pinMode(D0, OUTPUT);
+  //Celaning Warning LED
+  pinMode(D5, OUTPUT);
+  pinMode(D4, OUTPUT);
+  if(dataSend[0] == '0'){
+    Serial.println("Fernwartung deaktiviert");
+  }
+  else
+  {
+    // Y Drive
+    pinMode(Pos_Y, OUTPUT);
+    pinMode(Neg_Y, OUTPUT);
+
+    // X Drive
+    pinMode(Pos_X, OUTPUT);
+    pinMode(Neg_X, OUTPUT);
+
+    delay(1000); 
+    Serial.println();
+
+    WiFi.softAP(ssid, password);
+  
+    IPAddress apip = WiFi.softAPIP(); // Get the IP server
+    Serial.print("Connect your wifi laptop/mobile phone to this NodeMCU Access Point : ");
+    Serial.println(ssid);
+    Serial.print("Visit this IP : ");
+    Serial.print(apip); // Prints the IP address of the server to be visited
+    Serial.println(" in your browser.");
+      
+    server.on("/", response); 
+
+    // Decrease Cleaning
+    server.on("/-", decreaseCleaning);
+    server.on("/+", increaseCleaning);
+
+    // Y Drive
+    server.on("/Pos_Y", positiveYDrive);
+    server.on("/Neg_Y", negativeYDrive);
+    server.on("/SY", stopYDrive);
+
+    // X Drive
+    server.on("/Pos_X", positiveXDrive);
+    server.on("/Neg_X", negativeXDrive);
+    server.on("/SX", stopXDrive);
+
+    server.begin(); // Start the server
+    Serial.println("HTTP server beginned");
+    // Y Drive
+    digitalWrite(Neg_Y, LOW);
+    digitalWrite(Pos_Y, LOW);
+    // X Drive
+    digitalWrite(Neg_X, LOW);
+    digitalWrite(Pos_X, LOW);
+  }
+}
+ 
+void loop() {
+  //Status LED, lights up when system ready
+  digitalWrite(D0, LOW);
+  server.handleClient();
+  recieveData();
+}
