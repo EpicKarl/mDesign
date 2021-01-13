@@ -4,7 +4,7 @@
 
 1. Installiere VS Code
 2. Installiere die Extension PlatformIO
-3. Installiere den USB UART Treiber für den ESP 8266 (Ordner: Ordnername).
+3. Installiere den USB UART Treiber für den ESP 8266 (Ordner: Ordnername). 
 3.1 Workaround für die Treiberinstallation: Arduino IDE installieren
 
 4. Clone Repository
