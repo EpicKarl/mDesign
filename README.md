@@ -1,6 +1,6 @@
 # mDesign
 
-# Aufspielen der Fernwartung auf den Node MCU ESP 8266:
+# Aufspielen der Fernwartungsoftware auf den Node MCU ESP 8266:
 
 1. Installiere VS Code
 2. Installiere die Extension PlatformIO
