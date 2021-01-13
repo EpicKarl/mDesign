@@ -1,6 +1,6 @@
 #include <stdlib.h>                   //für atoi() notwendig
 
-byte bufferData[10] = {'0'};
+byte bufferData[11] = {'0'};
 char incomingData[10] = {'0'};
 byte dataToSend[6] = {'0'};
 byte old_dataToSend[6] = {'0'};
@@ -15,12 +15,15 @@ void setup() {
 }
 
 void recieveData(){
-  Serial.setTimeout(100);
+  //Serial.setTimeout(100);
   if(Serial.available()){
     incomingSignal = Serial.readBytes(bufferData, 11);
     tmp_state[0] = bufferData[0];
     tmp_state[1] = bufferData[1];
-    state = atoi(tmp_state);            //verwendet bufferData[0],[1] um aus 6 & 5 -> 0x65 -> 'A' zu machen
+//    Serial.println(tmp_state[0]);
+//    Serial.println(tmp_state[1]);
+//    Serial.println(atoi(tmp_state)/10);
+    state = atoi(tmp_state)/10;            //verwendet bufferData[0],[1] um aus 6 & 5 -> 0x65 -> 'A' zu machen (Durch 10 um eine nichterklärebare Null loszuwerden!)
     incomingData[0] = state;            //Zuweisungen in char Array für Server
     incomingData[1] = bufferData[2];
     incomingData[2] = bufferData[3];
@@ -54,6 +57,8 @@ void sendDataToSerial(){
 
 void loop() {
   recieveData();
+  delay(100);
+  dataToSend[0] = '0';
   //sendDataToSerial();
   //delay(2000);
   }
