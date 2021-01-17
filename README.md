@@ -13,3 +13,7 @@
 6.1 Bei COM Port Problemen siehe: https://docs.platformio.org/en/latest/projectconf/section_env_upload.html
 
 7. Upload Button in Platform IO Project drücken. (blaue Leiste, Pfeil nach rechts)
+
+# Debugging der Fernwartung
+
+Für das Debuggen ist es wichtig, entweder die Funktion receiveData() oder die Funktion sendDataToSerial() auskommentiert werden. Beachte Hinweise im Code

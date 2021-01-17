@@ -38,9 +38,9 @@ void recieveData(){
     incomingData[7] = bufferData[8];
     incomingData[8] = bufferData[9];
     incomingData[9] = bufferData[10];
-    for (auto &current : incomingData) {  //Lediglich Konsolenausgabe, ob Übertragung geklappt hat
-      Serial.print(current);              //Funktioniert nicht wenn sendDataToSerial() verwendet wird
-    }Serial.print("\n");
+//    for (auto &current : incomingData) {  //Konsolenausgabe zum Debuggen sendDataToSerial() muss in der main() auskommentiert sein
+//      Serial.print(current);              
+//    }Serial.print("\n");
   }
 }
 
@@ -51,9 +51,9 @@ void sendDataToSerial(){
      dataToSend[3] != old_dataToSend[3] ||
      dataToSend[4] != old_dataToSend[4] ||
      dataToSend[5] != old_dataToSend[5]){
-    for (auto &current : dataToSend) {
-      Serial.print(current);
-    }
+//    for (auto &current : dataToSend) { //Konsolenausgabe zum Debuggen receiveData() muss in der main() auskommentiert sein
+//      Serial.print(current);
+//    }
     for (int i = 0; i < 6; i++) {
       old_dataToSend[i] = dataToSend[i];
     }
@@ -451,6 +451,5 @@ void loop() {
   digitalWrite(D0, LOW);
   recieveData();
   server.handleClient();
-  //sendDataToSerial();
-  //Anzeige Senden und Empfangen einbauen
+  sendDataToSerial();
 }
