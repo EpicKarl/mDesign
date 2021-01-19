@@ -51,9 +51,9 @@ void sendDataToSerial(){
      dataToSend[3] != old_dataToSend[3] ||
      dataToSend[4] != old_dataToSend[4] ||
      dataToSend[5] != old_dataToSend[5]){
-//    for (auto &current : dataToSend) { //Konsolenausgabe zum Debuggen receiveData() muss in der main() auskommentiert sein
-//      Serial.print(current);
-//    }
+    for (auto &current : dataToSend) { //Konsolenausgabe zum Debuggen receiveData() muss in der main() auskommentiert sein
+      Serial.print(current);
+    }
     for (int i = 0; i < 6; i++) {
       old_dataToSend[i] = dataToSend[i];
     }
@@ -69,8 +69,12 @@ const char *ssid = "AntidustA_Control";
 const char *password = "AntidustA";
 
 // ------------------------------------Declare constants to make the page to be visited.----------------------------
+/*const String HtmlHtml = "<html><head>"
+"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /></head>";*/
 const String HtmlHtml = "<html><head>"
-"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /></head>";
+"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />"
+"<meta http-equiv=\"REFRESH\" content=\"1\"/>"
+"</head>";
 const String HtmlTitle = "<h1>Control AntidustA 2.0 mit NodeMCU WiFi Access Point</h1><br/>";
 const String HtmlHtmlClose = "</html>";
 // -----------------------------------------------------------------------------------------------------------------
