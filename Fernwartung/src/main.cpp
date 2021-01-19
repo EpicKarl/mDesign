@@ -4,30 +4,34 @@ Ein Emergency Button aus der Ferne ist gefählich, da wir nicht sicherstellen k�
 Reset Button unnötog, wenn Emergency Button nicht implementiert
 */
 
+//#define DEBUGMODE
 
 #include <Arduino.h>
 #include <ESP8266WebServer.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Receiving Data by Philipp Otto ------------------------------------------------------------------------------
-byte bufferData[11] = {'0'};
-char incomingData[10] = {'0'};
-byte dataToSend[6] = {'0'};
-byte old_dataToSend[6] = {'0'};
-char tmp_state[2] = {'0'};
+byte bufferData[11] = {};
+char incomingData[10] = {};
+byte dataToSend[6] = {};
+byte old_dataToSend[6] = {};
+char tmp_state[2] = {};
 
 byte incomingSignal;
 char state;
-
 void recieveData(){
   //Serial.setTimeout(100);
   if(Serial.available()){
     incomingSignal = Serial.readBytes(bufferData, 11);
+
     tmp_state[0] = bufferData[0];
     tmp_state[1] = bufferData[1];
-    state = atoi(tmp_state)/10;            //verwendet bufferData[0],[1] um aus 6 & 5 -> 0x65 -> 'A' zu machen (Durch 10 um eine nichterklärebare Null loszuwerden!)
+    
+    state = ( 10 * (tmp_state[0] - '0' ) ) + tmp_state[1] - '0'; // own atoi()
+
     incomingData[0] = state;            //Zuweisungen in char Array für Server
     incomingData[1] = bufferData[2];
     incomingData[2] = bufferData[3];
@@ -38,9 +42,14 @@ void recieveData(){
     incomingData[7] = bufferData[8];
     incomingData[8] = bufferData[9];
     incomingData[9] = bufferData[10];
-//    for (auto &current : incomingData) {  //Konsolenausgabe zum Debuggen sendDataToSerial() muss in der main() auskommentiert sein
-//      Serial.print(current);              
-//    }Serial.print("\n");
+
+    #ifdef DEBUGMODE
+      for (auto &current : incomingData) {  //Konsolenausgabe zum Debuggen sendDataToSerial() muss in der main() auskommentiert sein
+      Serial.print(current);              
+      }
+      Serial.print("\n");
+    #endif
+
   }
 }
 
@@ -51,7 +60,7 @@ void sendDataToSerial(){
      dataToSend[3] != old_dataToSend[3] ||
      dataToSend[4] != old_dataToSend[4] ||
      dataToSend[5] != old_dataToSend[5]){
-    for (auto &current : dataToSend) { //Konsolenausgabe zum Debuggen receiveData() muss in der main() auskommentiert sein
+    for (auto &current : dataToSend) { 
       Serial.print(current);
     }
     for (int i = 0; i < 6; i++) {
@@ -453,7 +462,11 @@ void setup() {
 void loop() {
   //Status LED, lights up when system ready
   digitalWrite(D0, LOW);
+
+  noInterrupts();
   recieveData();
+  interrupts();
+
   server.handleClient();
   sendDataToSerial();
 }
