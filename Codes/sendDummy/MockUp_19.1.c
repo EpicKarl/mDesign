@@ -75,7 +75,7 @@ void sendDataToSerial(){
     }
   }else if(dataRecieve[0] == '1'){
     if(dataRecieve[4] == '1'){
-      dataToSend[0]= 'J';
+      dataToSend[0]= 'E';
       dataToSend[1]= 0;
       dataToSend[2]= 0;
       dataToSend[3]= 0;
@@ -86,7 +86,7 @@ void sendDataToSerial(){
       dataToSend[8]= 0;
       dataToSend[9]= 0;
     }else if(dataRecieve[3] == '1'){
-      dataToSend[0]= 'I';
+      dataToSend[0]= 'D';
       dataToSend[1]= 0;
       dataToSend[2]= 0;
       dataToSend[3]= 0;
@@ -97,7 +97,7 @@ void sendDataToSerial(){
       dataToSend[8]= 0;
       dataToSend[9]= 0;
     }else if(dataRecieve[1] == '1'){
-      dataToSend[0]= 'F';
+      dataToSend[0]= 'B';
       dataToSend[1]= 0;
       dataToSend[2]= 0;
       dataToSend[3]= 0;
@@ -108,7 +108,7 @@ void sendDataToSerial(){
       dataToSend[8]= 1;
       dataToSend[9]= 0;
     }else if(dataRecieve[2] == '1'){
-      dataToSend[0]= 'H';
+      dataToSend[0]= 'C';
       dataToSend[1]= 0;
       dataToSend[2]= 0;
       dataToSend[3]= 0;
@@ -118,7 +118,18 @@ void sendDataToSerial(){
       dataToSend[7]= 0;
       dataToSend[8]= 0;
       dataToSend[9]= 1;
-    }                 
+    }else{
+	  dataToSend[0]= 'A';
+      dataToSend[1]= 0;
+      dataToSend[2]= 0;
+      dataToSend[3]= 0;
+      dataToSend[4]= 0;
+      dataToSend[5]= 0;
+      dataToSend[6]= 0;     
+      dataToSend[7]= 0;
+      dataToSend[8]= 0;
+      dataToSend[9]= 0;
+	}                 
   }
     if(dataToSend[0] != OldState){ //array wird nur gesendet, wenn sich dataToSend[0] --der state-- verändert
     for (int x = 0; x<10; x++){  
@@ -128,6 +139,7 @@ void sendDataToSerial(){
   }
   if(dataRecieve[0] == '0'){
     delay(2000);
+	count++;
   }
 }
 
@@ -148,5 +160,4 @@ void setup() {
 void loop() {
   sendDataToSerial();
   recieveDataFromSerial();
-  count++;
 }
