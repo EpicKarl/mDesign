@@ -10,8 +10,7 @@ Reset Button unnötog, wenn Emergency Button nicht implementiert
 #include <ESP8266WebServer.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 // Receiving Data by Philipp Otto ------------------------------------------------------------------------------
 byte bufferData[11] = {};
@@ -44,7 +43,7 @@ void recieveData(){
     incomingData[9] = bufferData[10];
 
     #ifdef DEBUGMODE
-      for (auto &current : incomingData) {  //Konsolenausgabe zum Debuggen sendDataToSerial() muss in der main() auskommentiert sein
+      for (auto &current : incomingData) {  //Konsolenausgabe zum Debuggen
       Serial.print(current);              
       }
       Serial.print("\n");
