@@ -5,6 +5,8 @@ Reset Button unnötog, wenn Emergency Button nicht implementiert
 */
 
 //#define DEBUGMODE
+#define HOMENETWORK
+//#define SOFTAP
 
 #include <Arduino.h>
 #include <ESP8266WebServer.h> 
@@ -73,9 +75,15 @@ void sendDataToSerial(){
 ESP8266WebServer server(80);
 
 // Make a wifi name and password as access points
-const char *ssid = "AntidustA_Control";
-const char *password = "AntidustA";
-
+#ifdef HOMENETWORK
+  const char *ssid = "YOUR_SSID";
+  const char *password = "YOUR_PASSWORD";
+#endif
+  
+#ifdef SOFTAP
+  const char *ssid = "AntidustA_Control";
+  const char *password = "AntidustA";
+#endif
 // ------------------------------------Declare constants to make the page to be visited.----------------------------
 /*const String HtmlHtml = "<html><head>"
 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /></head>";*/
@@ -90,7 +98,7 @@ void response(){
   String htmlRes = HtmlHtml + HtmlTitle;
   if(dataToSend[0] == '0'){
     //STATE
-    switch (state)
+    switch (incomingData[0])
     {
       case 'A':
         htmlRes += "<h2>State: NONE</h2><br/>";
@@ -209,7 +217,7 @@ void response(){
   }
   else {
     //STATE
-    switch (state)
+    switch (incomingData[0])
     {
       case 'A':
         htmlRes += "<h2>State: <font color:red>NONE</font></h2><br/>";
@@ -424,14 +432,33 @@ void setup() {
   // Status LED
   pinMode(D0, OUTPUT);
   
-  WiFi.softAP(ssid, password);
-  
-  IPAddress apip = WiFi.softAPIP(); // Get the IP server
-  Serial.print("Connect your wifi laptop/mobile phone to this NodeMCU Access Point : ");
-  Serial.println(ssid);
-  Serial.print("Visit this IP : ");
-  Serial.print(apip); // Prints the IP address of the server to be visited
-  Serial.println(" in your browser.");
+  #ifdef SOFTAP
+    WiFi.softAP(ssid, password);
+    
+    IPAddress apip = WiFi.softAPIP(); // Get the IP server
+    #ifdef DEBUGMODE
+      Serial.print("Connect your wifi laptop/mobile phone to this NodeMCU Access Point : ");
+      Serial.println(ssid);
+      Serial.print("Visit this IP : ");
+      Serial.print(apip); // Prints the IP address of the server to be visited
+      Serial.println(" in your browser.");
+    #endif
+  #endif
+
+  #ifdef HOMENETWORK
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(1000);
+      Serial.print(".");
+    }
+    #ifdef DEBUGMODE
+      Serial.println();
+      Serial.print("Connect your wifi laptop/mobile phone with your local network: ");
+      Serial.println(ssid);
+      Serial.print("Visit this IP : ");
+      Serial.println(WiFi.localIP());
+      Serial.println(" in your browser.");
+    #endif
+  #endif
       
   server.on("/", response); 
 
