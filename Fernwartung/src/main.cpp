@@ -436,11 +436,13 @@ void setup() {
     WiFi.softAP(ssid, password);
     
     IPAddress apip = WiFi.softAPIP(); // Get the IP server
-    Serial.print("Connect your wifi laptop/mobile phone to this NodeMCU Access Point : ");
-    Serial.println(ssid);
-    Serial.print("Visit this IP : ");
-    Serial.print(apip); // Prints the IP address of the server to be visited
-    Serial.println(" in your browser.");
+    #ifdef DEBUGMODE
+      Serial.print("Connect your wifi laptop/mobile phone to this NodeMCU Access Point : ");
+      Serial.println(ssid);
+      Serial.print("Visit this IP : ");
+      Serial.print(apip); // Prints the IP address of the server to be visited
+      Serial.println(" in your browser.");
+    #endif
   #endif
 
   #ifdef HOMENETWORK
@@ -448,12 +450,14 @@ void setup() {
       delay(1000);
       Serial.print(".");
     }
-    Serial.println();
-    Serial.print("Connect your wifi laptop/mobile phone with your local network: ");
-    Serial.println(ssid);
-    Serial.print("Visit this IP : ");
-    Serial.println(WiFi.localIP());
-    Serial.println(" in your browser.");
+    #ifdef DEBUGMODE
+      Serial.println();
+      Serial.print("Connect your wifi laptop/mobile phone with your local network: ");
+      Serial.println(ssid);
+      Serial.print("Visit this IP : ");
+      Serial.println(WiFi.localIP());
+      Serial.println(" in your browser.");
+    #endif
   #endif
       
   server.on("/", response); 
