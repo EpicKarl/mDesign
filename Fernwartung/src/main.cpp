@@ -15,8 +15,8 @@ Reset Button unnötog, wenn Emergency Button nicht implementiert
 // Receiving Data by Philipp Otto ------------------------------------------------------------------------------
 byte bufferData[11] = {};
 char incomingData[10] = {};
-byte dataToSend[6] = {};
-byte old_dataToSend[6] = {};
+char dataToSend[6] = {};
+char old_dataToSend[6] = {};
 char tmp_state[2] = {};
 
 byte incomingSignal;
