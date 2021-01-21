@@ -79,8 +79,8 @@ ESP8266WebServer server(80);
 
 // Make a wifi name and password as access points
 #ifdef HOMENETWORK
-  const char *ssid = "WLAN-815832";
-  const char *password = "8472372232991352";
+  const char *ssid = "********";
+  const char *password = "*******";
 #endif
   
 #ifdef SOFTAP
