@@ -19,8 +19,8 @@ byte bufferData[11] = {};
 char incomingData[10] = {};
 
 // byte oder char ist hier die FRAGE???????????????????????????????????????????????????????????
-char dataToSend[6] = {};
-char old_dataToSend[6] = {};
+byte dataToSend[6] = {};
+byte old_dataToSend[6] = {};
 
 char tmp_state[2] = {};
 
@@ -79,8 +79,8 @@ ESP8266WebServer server(80);
 
 // Make a wifi name and password as access points
 #ifdef HOMENETWORK
-  const char *ssid = "YOUR_SSID";
-  const char *password = "YOUR_PASSWORD";
+  const char *ssid = "WLAN-815832";
+  const char *password = "8472372232991352";
 #endif
   
 #ifdef SOFTAP
