@@ -18,7 +18,6 @@ Reset Button unnötog, wenn Emergency Button nicht implementiert
 byte bufferData[11] = {};
 char incomingData[10] = {};
 
-// byte oder char ist hier die FRAGE???????????????????????????????????????????????????????????
 byte dataToSend[6] = {};
 byte old_dataToSend[6] = {};
 
@@ -99,7 +98,7 @@ const String HtmlHtmlClose = "</html>";
 // -----------------------------------------------------------------------------------------------------------------
 void response(){
   String htmlRes = HtmlHtml + HtmlTitle;
-  if(dataToSend[0] == '0'){
+  if(dataToSend[0] == 0){
     //STATE
     switch (incomingData[0])
     {
@@ -251,13 +250,13 @@ void response(){
         break;
     }
     //Y Drive Buttons
-    if(dataToSend[1] == '1'){
+    if(dataToSend[1] == 1){
       htmlRes += 
         "<a href=\"Pos_Y\"><button style=\"background-color:green;color:black;width:20%;height:5%;\">Hochfahren </button></a>"
         "<a href=\"Neg_Y\"><button style=\"background-color:black;color:white;width:20%;height:5%;\">Runterfahren </button></a>"
         "<a href=\"SY\"><button style=\"background-color:black;color:white;width:20%;height:5%;\">Stopp Hoch/Runter-Fahrt </button></a><br/><br/><br/>";
     }
-    else if(dataToSend[2] == '1'){
+    else if(dataToSend[2] == 1){
       htmlRes += 
         "<a href=\"Pos_Y\"><button style=\"background-color:black;color:white;width:20%;height:5%;\">Hochfahren </button></a>"
         "<a href=\"Neg_Y\"><button style=\"background-color:green;color:black;width:20%;height:5%;\">Runterfahren </button></a>"
@@ -269,13 +268,13 @@ void response(){
         "<a href=\"SY\"><button style=\"background-color:red;color:black;width:20%;height:5%;\">Stopp Hoch/Runter-Fahrt </button></a><br/><br/><br/>";
     }
     // X Drive Buttons
-    if(dataToSend[3] == '1'){
+    if(dataToSend[3] == 1){
       htmlRes += 
         "<a href=\"Pos_X\"><button style=\"background-color:green;color:black;width:20%;height:5%;\">Rechtsfahren </button></a>"
         "<a href=\"Neg_X\"><button style=\"background-color:black;color:white;width:20%;height:5%;\">Linksfahren </button></a>"
         "<a href=\"SX\"><button style=\"background-color:black;color:white;width:20%;height:5%;\">Stopp Rechts/Links-Fahrt </button></a><br/><br/><br/>";
     }
-    else if(dataToSend[4] == '1'){
+    else if(dataToSend[4] == 1){
       htmlRes += 
         "<a href=\"Pos_X\"><button style=\"background-color:black;color:white;width:20%;height:5%;\">Rechtsfahren </button></a>"
         "<a href=\"Neg_X\"><button style=\"background-color:green;color:black;width:20%;height:5%;\">Linksfahren </button></a>"
@@ -289,7 +288,7 @@ void response(){
 
     
     //Cleaning Buttons
-    if(dataToSend[5] == '1'){
+    if(dataToSend[5] == 1){
       htmlRes += 
         "<a href=\"Start_Cleaning\"><button style=\"background-color:green;color:black;width:30%;height:5%;\">Start Reinigung</button></a>"
         "<a href=\"Stop_Cleaning\"><button style=\"background-color:black;color:white;width:30%;height:5%;\">Stopp Reinigung</button></a><br/><br/><br/>";
@@ -378,54 +377,54 @@ void response(){
   }
 }
 void positiveYDrive(){
-  dataToSend[1] = '1';
-  dataToSend[2] = '0';
+  dataToSend[1] = 1;
+  dataToSend[2] = 0;
   response();
 }
 void negativeYDrive(){
-  dataToSend[1] = '0';
-  dataToSend[2] = '1';
+  dataToSend[1] = 0;
+  dataToSend[2] = 1;
   response();
 }
 void stopYDrive(){
-  dataToSend[1] = '0';
-  dataToSend[2] = '0';
+  dataToSend[1] = 0;
+  dataToSend[2] = 0;
   response();
 }
 void positiveXDrive(){
-  dataToSend[3] = '1';
-  dataToSend[4] = '0';
+  dataToSend[3] = 1;
+  dataToSend[4] = 0;
   response();
 }
 void negativeXDrive(){
-  dataToSend[3] = '0';
-  dataToSend[4] = '1';
+  dataToSend[3] = 0;
+  dataToSend[4] = 1;
   response();
 }
 void stopXDrive(){
-  dataToSend[3] = '0';
-  dataToSend[4] = '0';
+  dataToSend[3] = 0;
+  dataToSend[4] = 0;
   response();
 }
 void startCleaning(){
-  dataToSend[5] = '1';
+  dataToSend[5] = 1;
   response();
 }
 void stopCleaning(){
-  dataToSend[5] = '0';
+  dataToSend[5] = 0;
   response();
 }
 void startFW(){
-  dataToSend[0] = '1';
+  dataToSend[0] = 1;
   response();
 }
 void stopFW(){
-  dataToSend[0] = '0';
-  dataToSend[1] = '0';
-  dataToSend[2] = '0';
-  dataToSend[3] = '0';
-  dataToSend[4] = '0';
-  dataToSend[5] = '0';
+  dataToSend[0] = 0;
+  dataToSend[1] = 0;
+  dataToSend[2] = 0;
+  dataToSend[3] = 0;
+  dataToSend[4] = 0;
+  dataToSend[5] = 0;
   response();
 }
 
