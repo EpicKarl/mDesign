@@ -186,6 +186,10 @@ void sendDataTomySerial(){
 			dataToSend[9]= 0;
 		}                 
 	}
+	if(dataRecieve[0] == '0'){
+		delay(2000);
+		count++;
+	}
     if (dataToSend[0] != old_dataToSend[0] || //sendet nur wenn sich irgendwas ändert
 		dataToSend[1] != old_dataToSend[1] || 
 		dataToSend[2] != old_dataToSend[2] ||
@@ -201,11 +205,7 @@ void sendDataTomySerial(){
 		}
 		for (int i = 0; i < 10; i++) {
 			old_dataToSend[i] = dataToSend[i];
-	    }
-		if(dataRecieve[0] == '0'){
-			delay(2000);
-			count++;
-		}	
+	    }	
 	}
 }
 
