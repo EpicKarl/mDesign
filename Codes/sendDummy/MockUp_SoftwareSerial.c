@@ -84,10 +84,6 @@ void sendDataTomySerial(){
       dataToSend[2]= 0;
       dataToSend[3]= 0;
       dataToSend[4]= 1;
-      dataToSend[5]= 0;
-      if(dataRecieve[5] == '1'){
-        dataToSend[5] = 1;
-      }
       dataToSend[6]= 1;     
       dataToSend[7]= 0;
       dataToSend[8]= 0;
@@ -98,10 +94,6 @@ void sendDataTomySerial(){
       dataToSend[2]= 0;
       dataToSend[3]= 1;
       dataToSend[4]= 0;
-      dataToSend[5]= 0;
-      if(dataRecieve[5] == '1'){
-        dataToSend[5] = 1;
-      }
       dataToSend[6]= 0;     
       dataToSend[7]= 1;
       dataToSend[8]= 0;
@@ -112,10 +104,6 @@ void sendDataTomySerial(){
       dataToSend[2]= 0;
       dataToSend[3]= 0;
       dataToSend[4]= 0;
-      dataToSend[5]= 0;
-      if(dataRecieve[5] == '1'){
-        dataToSend[5] = 1;
-      }
       dataToSend[6]= 0;     
       dataToSend[7]= 0;
       dataToSend[8]= 1;
@@ -126,26 +114,34 @@ void sendDataTomySerial(){
       dataToSend[2]= 1;
       dataToSend[3]= 0;
       dataToSend[4]= 0;
-      dataToSend[5]= 0;
-      if(dataRecieve[5] == '1'){
-        dataToSend[5] = 1;
-      }
       dataToSend[6]= 0;     
       dataToSend[7]= 0;
       dataToSend[8]= 0;
       dataToSend[9]= 1;
-    }else{
-    dataToSend[0]= 'A';
+    }else if(dataRecieve[5] == '1'){
+      dataToSend[0]= 'F';
+      dataToSend[1]= 0;
+      dataToSend[2]= 0;
+      dataToSend[3]= 0;
+      dataToSend[4]= 0;
+      dataToSend[5]= 1;
+      dataToSend[6]= 0;     
+      dataToSend[7]= 0;
+      dataToSend[8]= 0;
+      dataToSend[9]= 0;
+    }
+    else{
+      dataToSend[0]= 'A';
       dataToSend[1]= 0;
       dataToSend[2]= 0;
       dataToSend[3]= 0;
       dataToSend[4]= 0;
       dataToSend[5]= 0;
-      dataToSend[6]= 0;     
+      dataToSend[6]= 0;
       dataToSend[7]= 0;
       dataToSend[8]= 0;
       dataToSend[9]= 0;
-  }                 
+    }                 
   }
     if(dataToSend[0] != OldState){ //array wird nur gesendet, wenn sich dataToSend[0] --der state-- verändert
     for (int x = 0; x<10; x++){  
@@ -179,5 +175,4 @@ void setup() {
 void loop() {
   sendDataTomySerial();
   recieveDataFrommySerial();
-  //Serial.println("Moin");
 }
