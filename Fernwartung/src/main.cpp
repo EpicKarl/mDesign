@@ -5,8 +5,8 @@ Reset Button unnötog, wenn Emergency Button nicht implementiert
 */
 
 //#define DEBUGMODE
-#define HOMENETWORK
-//#define SOFTAP
+//#define HOMENETWORK
+#define SOFTAP
 
 #include <Arduino.h>
 #include <ESP8266WebServer.h> 
@@ -437,9 +437,8 @@ void setup() {
   
   #ifdef SOFTAP
     WiFi.softAP(ssid, password);
-    
-    IPAddress apip = WiFi.softAPIP(); // Get the IP server
     #ifdef DEBUGMODE
+      IPAddress apip = WiFi.softAPIP(); // Get the IP server
       Serial.print("Connect your wifi laptop/mobile phone to this NodeMCU Access Point : ");
       Serial.println(ssid);
       Serial.print("Visit this IP : ");
@@ -488,7 +487,9 @@ void setup() {
 
   // Start the server
   server.begin();
-  Serial.println("HTTP server beginned");
+  #ifdef DEBUGMODE
+    Serial.println("HTTP server beginned");
+  #endif
 }
 
 void loop() {
