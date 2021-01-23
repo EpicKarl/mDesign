@@ -133,7 +133,6 @@ void sendDataTomySerial(){
 			dataToSend[2]= 0;
 			dataToSend[3]= 0;
 			dataToSend[4]= 1;
-			dataToSend[5]= 0;
 			dataToSend[6]= 1;     
 			dataToSend[7]= 0;
 			dataToSend[8]= 0;
@@ -144,7 +143,6 @@ void sendDataTomySerial(){
 			dataToSend[2]= 0;
 			dataToSend[3]= 1;
 			dataToSend[4]= 0;
-			dataToSend[5]= 0;
 			dataToSend[6]= 0;     
 			dataToSend[7]= 1;
 			dataToSend[8]= 0;
@@ -155,7 +153,6 @@ void sendDataTomySerial(){
 			dataToSend[2]= 0;
 			dataToSend[3]= 0;
 			dataToSend[4]= 0;
-			dataToSend[5]= 0;
 			dataToSend[6]= 0;     
 			dataToSend[7]= 0;
 			dataToSend[8]= 1;
@@ -166,13 +163,14 @@ void sendDataTomySerial(){
 			dataToSend[2]= 1;
 			dataToSend[3]= 0;
 			dataToSend[4]= 0;
-			dataToSend[5]= 0;
 			dataToSend[6]= 0;     
 			dataToSend[7]= 0;
 			dataToSend[8]= 0;
 			dataToSend[9]= 1;
 		}else if(dataRecieve[5] == '1'){
 			dataToSend[5]= 1;
+		}else if(dataRecieve[5] == '0'){
+			dataToSend[5]= 0;
 		}else{
 			dataToSend[0]= 'A';
 			dataToSend[1]= 0;
