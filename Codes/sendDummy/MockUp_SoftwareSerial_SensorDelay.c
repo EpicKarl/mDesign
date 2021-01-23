@@ -4,10 +4,11 @@
 SoftwareSerial mySerial(2, 3); // TX, RX
 
 byte dataToSend[10] = {};
+byte old_dataToSend[10] = {};
 byte dataRecieve[6] = {};
 byte bufferData[6] = {};
 byte incomingSignal;
-int OldState;
+
 int count;
 
 void sendDataTomySerial(){
@@ -183,18 +184,28 @@ void sendDataTomySerial(){
       dataToSend[7]= 0;
       dataToSend[8]= 0;
       dataToSend[9]= 0;
-  }                 
+	}                 
   }
-    if(dataToSend[0] != OldState){ //array wird nur gesendet, wenn sich dataToSend[0] --der state-- verändert
-    for (int x = 0; x<10; x++){  
-      mySerial.print(dataToSend[x]); 
-    }
-    OldState = dataToSend[0];
-  }
-  if(dataRecieve[0] == '0'){
-    delay(2000);
-  count++;
-  }
+    if (dataToSend[0] != old_dataToSend[0] || //sendet nur wenn sich irgendwas ändert
+		dataToSend[1] != old_dataToSend[1] || 
+		dataToSend[2] != old_dataToSend[2] ||
+		dataToSend[3] != old_dataToSend[3] ||
+		dataToSend[4] != old_dataToSend[4] ||
+		dataToSend[5] != old_dataToSend[5] ||
+		dataToSend[6] != old_dataToSend[6] ||
+		dataToSend[7] != old_dataToSend[7] ||
+		dataToSend[8] != old_dataToSend[8] ||
+		dataToSend[9] != old_dataToSend[9]){ 
+		for (int x = 0; x<10; x++){  
+		  mySerial.print(dataToSend[x]); 
+		}
+		for (int i = 0; i < 10; i++) {
+		  old_dataToSend[i] = dataToSend[i];
+	    }
+	if(dataRecieve[0] == '0'){
+		delay(2000);
+		count++;
+	}	
 }
 
 void recieveDataFrommySerial(){
