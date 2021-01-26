@@ -4,7 +4,7 @@
 
 1. Installiere VS Code
 2. Installiere die Extension PlatformIO
-3. Installiere den USB UART Treiber für den ESP 8266 Ordner: ESPDriver oder [hier](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers).
+3. Installiere den USB UART Treiber für den ESP 8266 aus dem Ordner "ESPDriver" oder lade ihn [hier](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers) herunter.
 4. Workaround für die Treiberinstallation: Arduino IDE installieren
 
 5. Clone Repository
