@@ -4,13 +4,13 @@
 
 1. Installiere VS Code
 2. Installiere die Extension PlatformIO
-3. Installiere den USB UART Treiber für den ESP 8266 (Ordner: ESPDriver oder https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers).
-(4.) Workaround für die Treiberinstallation: Arduino IDE installieren
+3. Installiere den USB UART Treiber für den ESP 8266 Ordner: ESPDriver oder [hier](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers).
+4. Workaround für die Treiberinstallation: Arduino IDE installieren
 
 5. Clone Repository
 6. VS Code starten Platform IO öffnen "Open Project" auswählen und den Ordner Fernwartung im Repo auswählen.
 7. ESP mit PC verbinden
-(8.) Bei COM Port Problemen siehe: https://docs.platformio.org/en/latest/projectconf/section_env_upload.html
+8. Bei COM Port Problemen auf der platformIO [hier](https://docs.platformio.org/en/latest/projectconf/section_env_upload.html) nachschauen.
 9. Vorher checken ob SOFTAP definiert und DEBUGMODE NICHT definiert sind.
 10. Upload Button in Platform IO Project drücken. (blaue Leiste, Pfeil nach rechts)
 
