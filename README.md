@@ -10,8 +10,8 @@
 5. Clone Repository
 6. VS Code starten Platform IO öffnen "Open Project" auswählen und den Ordner Fernwartung im Repo auswählen.
 7. ESP mit PC verbinden
-8. Bei COM Port Problemen auf der platformIO [hier](https://docs.platformio.org/en/latest/projectconf/section_env_upload.html) nachschauen.
-9. Vorher checken ob SOFTAP definiert und DEBUGMODE NICHT definiert sind.
+8. Bei COM Port Problemen [hier](https://docs.platformio.org/en/latest/projectconf/section_env_upload.html) nachschauen.
+9. Vor dem Upload checken ob SOFTAP definiert und DEBUGMODE NICHT definiert sind.
 10. Upload Button in Platform IO Project drücken. (blaue Leiste, Pfeil nach rechts)
 
 # Debugging der Fernwartung
