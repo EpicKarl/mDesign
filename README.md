@@ -11,9 +11,9 @@
 5. VS Code starten Platform IO öffnen "Open Project" auswählen und den Ordner Fernwartung im Repo auswählen.
 6. ESP mit PC verbinden
 6.1 Bei COM Port Problemen siehe: https://docs.platformio.org/en/latest/projectconf/section_env_upload.html
-
-7. Upload Button in Platform IO Project drücken. (blaue Leiste, Pfeil nach rechts)
+7. Vorher checken ob SOFTAP definiert und DEBUGMODE NICHT definiert sind.
+8. Upload Button in Platform IO Project drücken. (blaue Leiste, Pfeil nach rechts)
 
 # Debugging der Fernwartung
 
-Für das Debuggen ist es wichtig, entweder die Funktion receiveData() oder die Funktion sendDataToSerial() auskommentiert werden. Beachte Hinweise im Code
+Für das Debuggen gibt es im Code verschiedene Präprozessoranweisungen. Dies ist nötig, da der ESP standardmäßig nur einen Hardware Serial Port besitzt. Beachte Hinweise im Code! Während ein PC an dem ESP angeschlossen ist, können dem Controllino KEINE Befehle gesendet werden.
